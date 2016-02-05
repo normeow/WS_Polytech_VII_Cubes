@@ -1,12 +1,25 @@
-const int PIN_1 = 11;
+
 const double EPS = 0.08;
+
+const int RGBLED_PIN_R = 9;
+const int RGBLED_PIN_G = 10;
+const int RGBLED_PIN_B = 11;
+
 bool isequal(double v1, double v2){
   return abs(v1 - v2) < EPS;
 }
 
+void turnOnDaLight(int r, int g, int b){
+  analogWrite(RGBLED_PIN_R, r);
+  analogWrite(RGBLED_PIN_G, g);
+  analogWrite(RGBLED_PIN_B, b);
+}
+
 void setup() {
   // put your setup code here, to run once:
-  pinMode(PIN_1, OUTPUT);
+  pinMode(RGBLED_PIN_R, OUTPUT);
+  pinMode(RGBLED_PIN_G, OUTPUT);
+  pinMode(RGBLED_PIN_B, OUTPUT);
   Serial.begin(9600);
 }
 
@@ -17,40 +30,32 @@ void loop() {
   4.64
   4.21
   3.93
-  eps = 20
   */
   double val = analogRead(A0)/204.6;
   
-  Serial.println("Achtung:");
-  Serial.println(val);
-  Serial.println();
   delay(500);
-  if (isequal(val, 4.64)){
-    Serial.println("~4.64");
-    //digitalWrite(PIN_1, HIGH);
-    analogWrite(PIN_1, 200);
+  if (isequal(val, 5.0)){
+    Serial.println("Yellow 5.0");
+    turnOnDaLight(255, 50, 0);
+  }
+  else if (isequal(val, 4.64)){
+    Serial.println("GREEN ~4.64");
+    turnOnDaLight(0, 255, 0);
   }
   else
   if (isequal(val, 4.2)){
-    Serial.println("~4.2");
-    /*digitalWrite(PIN_1, HIGH);
-    delay(500);
-    digitalWrite(PIN_1, LOW);
-    delay(500);*/
-    analogWrite(PIN_1, 10);
+    Serial.println("BLUE ~4.2");
+    turnOnDaLight(0, 0, 255);
   }
   else
   if (isequal(val, 3.93)){
-    Serial.println("~3.93");
-    digitalWrite(PIN_1, HIGH);
+    Serial.println("RED 3.93");
+    turnOnDaLight(255, 0, 0);
     delay(100);
-    digitalWrite(PIN_1, LOW);
-    delay(100);
-    //analogWrite(PIN_1, 50);
   }
   else
   {
-    digitalWrite(PIN_1, LOW);
+    turnOnDaLight(0, 0, 0);
   }
   
 }
