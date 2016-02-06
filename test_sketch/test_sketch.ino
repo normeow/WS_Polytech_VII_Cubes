@@ -1,4 +1,3 @@
-
 const double EPS = 0.08;
 
 const int RGBLED_PIN_R = 9;
@@ -13,7 +12,7 @@ const String TAG_3_9 = "THE TREE. GREEN ~3.93V";
 int r = 0, g = 0, b = 0;
 bool i = 1;
 //track current face
-bool f1, f2, f3, f4;d
+bool f1, f3;
 
 bool isequal(double v1, double v2){
   return abs(v1 - v2) < EPS;
@@ -42,12 +41,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  /*
-  5
-  4.64
-  4.21
-  3.93
-  */
   double val = analogRead(A0)/204.6;
   
   if (isequal(val, 5.0)){
@@ -63,7 +56,7 @@ void loop() {
     b = 0;
     
     f1 = true;
-    f2 = f3 = f4 = false;
+    f3 = false;
     
     }
     turnOnDaLight();
@@ -86,7 +79,7 @@ void loop() {
       b = 10;
       
       f3 = true;
-      f2 = f1 = f4 = false;
+      f1 = false;
     }
     turnOnDaLight();
     //turnOnDaLight(0, 0, 255);
