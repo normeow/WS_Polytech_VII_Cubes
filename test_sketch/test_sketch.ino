@@ -5,11 +5,28 @@ const int RGBLED_PIN_R = 9;
 const int RGBLED_PIN_G = 10;
 const int RGBLED_PIN_B = 11;
 
+const String TAG_5_0 = "THE SUN. YELLOW 5V";
+const String TAG_4_6 = "THE HEART. RED ~4.64V";
+const String TAG_4_2 = "THE WHALE. BLUE ~4.2V";
+const String TAG_3_9 = "THE TREE. GREEN ~3.93V";
+
+int r = 0, g = 0, b = 0;
+bool i = 1;
+//track current face
+bool f1, f2, f3, f4;d
+
 bool isequal(double v1, double v2){
   return abs(v1 - v2) < EPS;
 }
 
 void turnOnDaLight(int r, int g, int b){
+  analogWrite(RGBLED_PIN_R, r);
+  analogWrite(RGBLED_PIN_G, g);
+  analogWrite(RGBLED_PIN_B, b);
+}
+
+
+void turnOnDaLight(){
   analogWrite(RGBLED_PIN_R, r);
   analogWrite(RGBLED_PIN_G, g);
   analogWrite(RGBLED_PIN_B, b);
@@ -33,29 +50,56 @@ void loop() {
   */
   double val = analogRead(A0)/204.6;
   
-  delay(500);
   if (isequal(val, 5.0)){
-    Serial.println("Yellow 5.0");
-    turnOnDaLight(255, 50, 0);
+    Serial.println(TAG_5_0);
+    if (f1) {
+      r = (r + 5) % 256 + 5; 
+      g = r/ 6 + 1;
+      
+    }
+    else{
+    r = 10;
+    g = 1;
+    b = 0;
+    
+    f1 = true;
+    f2 = f3 = f4 = false;
+    
+    }
+    turnOnDaLight();
+    //turnOnDaLight(255, 50, 0);
   }
   else if (isequal(val, 4.64)){
-    Serial.println("GREEN ~4.64");
-    turnOnDaLight(0, 255, 0);
+    Serial.println(TAG_4_6);
+    
+    turnOnDaLight(255*i, 0, 0);
+    i = ! i;
   }
   else
   if (isequal(val, 4.2)){
-    Serial.println("BLUE ~4.2");
-    turnOnDaLight(0, 0, 255);
+    Serial.println(TAG_4_2);
+    if (f3)
+      b = (b + 30) % 256;
+    else{
+      r = 0;
+      g = 0;
+      b = 10;
+      
+      f3 = true;
+      f2 = f1 = f4 = false;
+    }
+    turnOnDaLight();
+    //turnOnDaLight(0, 0, 255);
   }
   else
   if (isequal(val, 3.93)){
-    Serial.println("RED 3.93");
-    turnOnDaLight(255, 0, 0);
-    delay(100);
+    Serial.println(TAG_3_9);
+    turnOnDaLight(0, 255, 0);
   }
   else
   {
     turnOnDaLight(0, 0, 0);
   }
+  delay(1500);
   
 }
